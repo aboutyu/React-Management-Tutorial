@@ -20,34 +20,51 @@ const styles = theme => ({
   }
 });
 
-const customers = [
-  {
-    id: 1,
-    image: "https://placeimg.com/64/64/any",
-    name: "유태훈",
-    birth: "790807",
-    gender: "남자",
-    job: "대학원생"
-  },
-  {
-    id: 2,
-    image: "https://placeimg.com/64/64/any",
-    name: "유태훈",
-    birth: "790807",
-    gender: "남자",
-    job: "대학원생"
-  },
-  {
-    id: 3,
-    image: "https://placeimg.com/64/64/any",
-    name: "유태훈",
-    birth: "790807",
-    gender: "남자",
-    job: "대학원생"
-  }
-]
+// const customers = [
+//   {
+//     id: 1,
+//     image: "https://placeimg.com/64/64/any",
+//     name: "유태훈",
+//     birth: "790807",
+//     gender: "남자",
+//     job: "대학원생"
+//   },
+//   {
+//     id: 2,
+//     image: "https://placeimg.com/64/64/any",
+//     name: "유태훈",
+//     birth: "790807",
+//     gender: "남자",
+//     job: "대학원생"
+//   },
+//   {
+//     id: 3,
+//     image: "https://placeimg.com/64/64/any",
+//     name: "유태훈",
+//     birth: "790807",
+//     gender: "남자",
+//     job: "대학원생"
+//   }
+// ]
   
 class App extends Component {
+
+  state = {
+    customers: ""
+  }
+
+  componentDidMount() {
+    this.callApi()
+        .then(res => this.setState({ customers : res }))
+        .catch(err => console.log(err));
+  }
+
+  callApi = async () => {
+    const response = await fetch('users/');
+    const body = await response.json();
+    return body;
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -64,7 +81,7 @@ class App extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-          {customers.map(c => {
+          {this.state.customers ? this.state.customers.map(c => {
             return(
                 
                     <Customer 
@@ -77,7 +94,7 @@ class App extends Component {
                       job={c.job}
                     />
             )
-          })}
+          }) : "데이터가 없습니다." }
           </TableBody>
         </Table>
       </Paper>
